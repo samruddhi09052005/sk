@@ -1,31 +1,67 @@
-4,6,10,Slack
-Program 3: Create a maven projects with all dependencies required for the application in CI/CD pipeline.
+Program 3: Maven Project with JSON Dependency (CI/CD Pipeline)
+Step 1: Create Maven Project in Eclipse
+Open Eclipse IDE
+Go to:
+File → New → Maven Project → Next
+Select:
+maven-archetype-quickstart
+Version 1.1 or 1.4
+Click Next
 
-MAVEN PROJECT:
-Step1:
-Open Eclipse
-File -> new-> maven project ->next
-Choose maven-archetype-quickstart -> version 1.1 or 1.4
-Group id nd artifact id anything, Artifact nd package name should be same
-In chrome, search maven repository
-Search json simple
-1st json.simple
-Click the one which has more usages. 1.1.1
-In the maven u will have, there will be dependency code
-pom.xml paste the dependency code
- 
-Right click on package -> new -> file -> filename: any.json
-Code to put in .json file: 
- 
-Right click on src/test/java
-New-> class -> Demo.java
-Code to put in Demo.java:
+Fill:
+
+Group Id → anything
+Artifact Id → same as package name
+Package name → same as artifact name
+Step 2: Add Dependency
+
+Open browser and search:
+
+Maven Repository
+
+Search:
+
+json simple
+
+Open:
+
+json-simple 1.1.1
+
+Copy dependency and paste inside pom.xml
+
+<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version>
+</dependency>
+Step 3: Create JSON File
+
+Right click package → New → File
+
+Filename:
+
+san.json
+
+Content:
+
+{
+  "fname":"Sam",
+  "lname":"Shetty"
+}
+Step 4: Create Java Class
+
+Right click src/test/java
+
+New → Class → Demo.java
+
+Code:
+
 import java.io.FileReader;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class thoju {
+public class Demo {
 
     public static void main(String[] args) {
 
@@ -43,54 +79,99 @@ public class thoju {
             System.out.println("Fname : " + fname);
             System.out.println("lname : " + lname);
 
-        } 
+        }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
 
-Save and run
+Save and Run.
+.............................................
+Program 1: Docker Program
+Step 1: Create Folder
 
-1st Program:
-Create a folder nd open in vs code
-Create Dockerfile
-Content in Dockerfile: 
+Create a folder and open it in Visual Studio Code
+
+Step 2: Create Dockerfile
+
+Create file:
+
+Dockerfile
+
+Content:
+
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY . /app
 RUN javac prime.java
 CMD ["java","prime"]
 
-Put the java file name instead of prime
+Replace prime.java with your Java filename.
 
-Create .java file
-Write any apln code
-Save
+Step 3: Create Java File
 
-Run these 2 commands in terminal:
+Example:
+
+class prime {
+    public static void main(String args[]) {
+
+        int n = 7, flag = 0;
+
+        for(int i = 2; i <= n / 2; i++) {
+            if(n % i == 0) {
+                flag = 1;
+                break;
+            }
+        }
+
+        if(flag == 0)
+            System.out.println("Prime Number");
+        else
+            System.out.println("Not Prime");
+    }
+}
+
+Save the file.
+
+Step 4: Run Commands
+
+Open terminal and run:
+
 docker build -t h1 .
-//where -t h1 is image name
-docker run image-name
- 
+docker run h1
 
-Output :  
+Output will be shown.
 
-Docker hub should be running-> engine should be running
-Image should be in docker desktop
+Make sure:
 
-2nd Program: Create and configure  Jenkins files for workflow and build of an application  and push the image
+Docker Desktop is running
+Docker Engine is ON
+Image appears in Docker Desktop
+............................................................................
+Program 2: Jenkins Workflow and Push Docker Image
+Step 1: Create GitHub Repository
 
-Create a new repo in github
-Create a Dockerfile with the content:
-FROM eclipse-temurin:21-jdk
+Create repo in GitHub
+
+Add:
+
+Dockerfile
+Java file
+Jenkinsfile
+Dockerfile
+FROM eclipse-temurin:17
 WORKDIR /app
-COPY . /app
-RUN javac prime.java
-CMD ["java","prime"]
-
-Create a java appln file (say Hello.java)
-Create a Jenkinsfile with the content: 
+COPY . .
+RUN javac app.java
+CMD ["java", "app"]
+Java Program
+class prime {
+    public static void main(String args[]) {
+        System.out.println("Hello Jenkins");
+    }
+}
+Jenkinsfile
 pipeline {
     agent any
 
@@ -138,233 +219,163 @@ pipeline {
         }
     }
 }
+Configure Jenkins Credentials
 
-Go to Jenkins -> manage credentials -> add credential -> username p.w 
-Give username nd p.w of dockerhub  and click Create
-Jenkins->new item -> pipeline project -> ok
-Select pipelinescript from scm
-Scm -> select git
-Add git repo link
-Add credential
-Branch -> main
-
-Apply and save
-Click on build now
-It should show green check with all the stages being completed
-Image will be showed in docker hub
-
-4th program: slack
 Open Jenkins
-Open slack.com
-It should show welcome to lab practice
-Create new channel
-More 4,6,10,Slack
-Program 3: Create a maven projects with all dependencies required for the application in CI/CD pipeline.
 
-MAVEN PROJECT:
-Step1:
-Open Eclipse
-File -> new-> maven project ->next
-Choose maven-archetype-quickstart -> version 1.1 or 1.4
-Group id nd artifact id anything, Artifact nd package name should be same
-In chrome, search maven repository
-Search json simple
-1st json.simple
-Click the one which has more usages. 1.1.1
-In the maven u will have, there will be dependency code
-pom.xml paste the dependency code
- 
-Right click on package -> new -> file -> filename: any.json
-Code to put in .json file: 
- 
-Right click on src/test/java
-New-> class -> Demo.java
-Code to put in Demo.java:
-import java.io.FileReader;
+Go to:
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+Manage Jenkins
+Manage Credentials
+Add Credentials
 
-public class thoju {
+Select:
 
-    public static void main(String[] args) {
+Username with password
 
-        JSONParser p = new JSONParser();
+Enter:
 
-        try {
+DockerHub username
+DockerHub password
 
-            Object obj = p.parse(new FileReader("san.json"));
+ID:
 
-            JSONObject jo = (JSONObject) obj;
+Docker-credentials
 
-            String fname = (String) jo.get("fname");
-            String lname = (String) jo.get("lname");
+Create.
 
-            System.out.println("Fname : " + fname);
-            System.out.println("lname : " + lname);
+Create Pipeline Project
+Jenkins → New Item
+Select:
+Pipeline Project
+OK
 
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
+Under:
 
-Save and run
+Pipeline Script from SCM
+SCM → Git
+Paste GitHub repo link
+Add credentials
+Branch → main
 
-1st Program:
-Create a folder nd open in vs code
-Create Dockerfile
-Content in Dockerfile: 
-FROM eclipse-temurin:21-jdk
-WORKDIR /app
-COPY . /app
-RUN javac prime.java
-CMD ["java","prime"]
+Apply and Save.
 
-Put the java file name instead of prime
+Click:
 
-Create .java file
-Write any apln code
-Save
+Build Now
 
-Run these 2 commands in terminal:
-docker build -t h1 .
-//where -t h1 is image name
-docker run image-name
- 
+All stages should show green check marks.
 
-Output :  
+Docker image will appear in DockerHub.
+..............................................................................
+Program 4: Slack Notification in Jenkins
+Step 1: Open Slack
 
-Docker hub should be running-> engine should be running
-Image should be in docker desktop
+Open:
 
-2nd Program: Create and configure  Jenkins files for workflow and build of an application  and push the image
+Slack
 
-Create a new repo in github
-Create a Dockerfile with the content:
-FROM eclipse-temurin:21-jdk
-WORKDIR /app
-COPY . /app
-RUN javac prime.java
-CMD ["java","prime"]
+Create:
 
-Create a java appln file (say Hello.java)
-Create a Jenkinsfile with the content: 
-pipeline {
-    agent any
+New Workspace / Channel
 
-    environment {
-        DOCKERHUB_CREDENTIALS = 'Docker-credentials'
-        IMAGE_NAME = 'pannu27/new_docker_image'
-    }
+Example channel:
 
-    stages {
+lab-practice
+Step 2: Add Jenkins App
 
-        stage('Build Java Application') {
-            steps {
-                bat 'javac prime.java'
-            }
-        }
+In Slack:
 
-        stage('Run Java Program') {
-            steps {
-                bat 'java prime'
-            }
-        }
+More → Tools → Apps
+Search:
+Jenkins
+Open App
+Configure
+Add to Slack
+Select Channel
+Integrate
 
-        stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t %IMAGE_NAME%:latest .'
-            }
-        }
+Go to Step 3 and copy the Token.
 
-        stage('Login to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(
-                credentialsId: 'Docker-credentials',
-                usernameVariable: 'USER',
-                passwordVariable: 'PASS')]) {
+Step 3: Install Jenkins Plugins
 
-                    bat 'echo %PASS% | docker login -u %USER% --password-stdin'
-                }
-            }
-        }
+In Jenkins:
 
-        stage('Push Docker Image') {
-            steps {
-                bat 'docker push %IMAGE_NAME%:latest'
-            }
-        }
-    }
-}
+Manage Jenkins
+Plugins
 
-Go to Jenkins -> manage credentials -> add credential -> username p.w 
-Give username nd p.w of dockerhub  and click Create
-Jenkins->new item -> pipeline project -> ok
-Select pipelinescript from scm
-Scm -> select git
-Add git repo link
-Add credential
-Branch -> main
+Install:
 
-Apply and save
-Click on build now
-It should show green check with all the stages being completed
-Image will be showed in docker hub
+Slack Notification
+Global Slack Notifier
 
-4th program: slack
-Open Jenkins
-Open slack.com
-It should show welcome to lab practice
-Create new channel
-More -> tools-> apps -> search Jenkins -> open app -> configure -> add to slack -> select channel nd integrate -> go to step3 -> copy the token
-Go to Jenkins
-Available plugins -> select slack notification and global slack notifier and install them.
-No need to restart Jenkins
-Go to settings -> manage Jenkins ->system ->slack
-Workspace : csections-workspace
-Credentials: Add -> global -> secret text (the token u copied) ->id:anything and then create
-Click drop down nd select the credential
-Test connection -> should show success
-Apply and save
+No restart needed.
 
-Click on new item
-Select free style project -> ok
-Build steps: Add build steps -> execute windows batch command -> java –version
+Step 4: Configure Slack in Jenkins
 
-Post build actions:
-Add post build action -> slack notifications
-Select: 
-Notify build start
-Notify success
-Notify abort
-And then click on build now
+Go to:
 
+Manage Jenkins
+System
+Slack
 
- tools-> apps -> search Jenkins -> open app -> configure -> add to slack -> select channel nd integrate -> go to step3 -> copy the token
- tools-> apps -> search Jenkins -> open app -> configure -> add to slack -> select channel nd integrate -> go to step3 -> copy the token
- tools-> apps -> search Jenkins -> open app -> configure -> add to slack -> select channel nd integrate -> go to step3 -> copy the token
-Go to Jenkins
-Available plugins -> select slack notification and global slack notifier and install them.
-No need to restart Jenkins
-Go to settings -> manage Jenkins ->system ->slack
-Workspace : csections-workspace
-Credentials: Add -> global -> secret text (the token u copied) ->id:anything and then create
-Click drop down nd select the credential
-Test connection -> should show success
-Apply and save
+Fill:
 
-Click on new item
-Select free style project -> ok
-Build steps: Add build steps -> execute windows batch command -> java –version
+Workspace:
 
-Post build actions:
-Add post build action -> slack notifications
-Select: 
-Notify build start
-Notify success
-Notify abort
-And then click on build now
+csections-workspace
 
+Credentials:
 
+Add
+Global credentials
+Secret text
+
+Paste Slack Token.
+
+Give any ID and Create.
+
+Select the credential from dropdown.
+
+Click:
+
+Test Connection
+
+It should show:
+
+Success
+
+Apply and Save.
+..........................................................................
+Step 5: Create FreeStyle Project
+New Item
+FreeStyle Project
+OK
+Build Steps
+
+Add Build Step:
+
+Execute Windows Batch Command
+
+Command:
+
+java -version
+Post Build Actions
+
+Add:
+
+Slack Notifications
+
+Select:
+
+Notify Build Start
+Notify Success
+Notify Abort
+
+Save.
+
+Click:
+
+Build Now
+
+Slack notifications will appear in the selected Slack channel.
